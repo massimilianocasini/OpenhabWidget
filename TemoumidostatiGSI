@@ -1,0 +1,287 @@
+uid: Termoumidostato
+tags: []
+props:
+  parameters:
+    - description: Location (room) or device name
+      label: Title
+      name: title
+      required: false
+      type: TEXT
+    - context: item
+      description: Item for Termoumidostato Power
+      label: Proxy AttTermoX
+      name: itemPower
+      required: false
+      type: TEXT
+    - context: item
+      description: Item for Termoumidostato Indoor Temperature
+      label: TermoumidostatoXT
+      name: itemIndoorTemp
+      required: false
+      type: TEXT
+    - context: item
+      description: Item for Termoumidostato relè status
+      label: StatoReleX
+      name: itemReleStatus
+      required: false
+      type: TEXT
+    - context: item
+      description: Item for Termoumidostato Status
+      label: FeedBReleX
+      name: itemDeviceStatus
+      required: false
+      type: TEXT
+    - context: item
+      description: Item for Termoumidostato Wating
+      label: ProxyWatingAttTermoX
+      name: itemDeviceWating
+      required: false
+      type: TEXT
+    - context: item
+      description: Item Termoumidostato humidity
+      label: TermoumidostatoXU
+      name: itemIndoorHumidity
+      required: false
+      type: TEXT
+    - context: item
+      description: Item for Termoumidostato Temperature SetPoint
+      label: TermoumidostatoXS
+      name: itemTargetTemp
+      required: false
+      type: TEXT
+    - description: Set minimum target temperature (default = 1)
+      label: Minimum Temperature
+      name: MinimumTemperature
+      required: false
+      type: INTEGER
+    - description: Set maximum target temperature (default = 30)
+      label: Maximum Temperature
+      name: MaximumTemperature
+      required: false
+      type: INTEGER
+    - description: Set Target Temperature Stepsize (default = 1)
+      label: Target Temperature Stepsize
+      name: TemperatureStepsize
+      required: false
+      type: DECIMAL
+  parameterGroups: []
+timestamp: Sep 24, 2022, 3:32:30 PM
+component: f7-card
+config:
+  class:
+    - no-padding
+  outline: true
+  title: =props.title
+slots:
+  default:
+    - component: f7-row
+      config:
+        class:
+          - margin-top-half
+          - margin-left-half
+          - margin-right-half
+          - margin-bottom
+      slots:
+        default:
+          - component: f7-col
+            config:
+              large: "33"
+              width: "50"
+            slots:
+              default:
+                - component: f7-segmented
+                  config:
+                    class:
+                      - segmented-strong
+                    style:
+                      --f7-button-border-radius: 5px
+                      --f7-button-fill-hover-bg-color: var(--f7-theme-color)
+                      --f7-button-padding-horizontal: 0px
+                      --f7-button-padding-vertical: 0px
+                      --f7-segmented-strong-between-buttons: 5px
+                      --f7-segmented-strong-bg-color: transparent
+                      --f7-segmented-strong-button-font-weight: 300
+                      --f7-segmented-strong-button-hover-bg-color: rgba(var(--f7-theme-color-rgb), 0.07)
+                      --f7-segmented-strong-padding: 0px
+                  slots:
+                    default:
+                      - component: oh-button
+                        config:
+                          action: toggle
+                          actionCommand: ON
+                          actionCommandAlt: ON
+                          actionItem: =props.itemPower
+                          class:
+                            - padding-top-half
+                            - display-flex
+                            - flex-direction-column
+                          fill: "=(items[props.itemDeviceStatus].state == 1) ? true : false"
+                          icon-f7: "=(items[props.itemDeviceWating].state != 0) ? 'power' : 'arrow_2_circlepath_circle' "
+                          iconSize: 25
+                          outline: true
+                          style:
+                            --f7-button-border-color: var(--f7-card-outline-border-color)
+                            --f7-button-border-width: 1px
+                            font-size: 8px
+                            height: auto
+                          text: ON/OFF
+          - component: f7-col
+            config:
+              width: "33"
+            slots:
+              default:
+                - component: f7-row
+                  config:
+                    class:
+                      - padding-right-half
+                  slots:
+                    default:
+                      - component: f7-col
+                        config:
+                          width: "25"
+                        slots:
+                          default:
+                            - component: f7-icon
+                              config:
+                                class:
+                                  - float-right
+                                color: var(--f7-theme-color)
+                                f7: house
+                                size: 15
+                      - component: f7-col
+                        config:
+                          width: "75"
+                        slots:
+                          default:
+                            - component: Label
+                              config:
+                                class:
+                                  - float-right
+                                style:
+                                  font-size: 12px
+                                  overflow: hidden
+                                  text-overflow: elipsis
+                                  white-space: nowrap
+                                text: =items[props.itemIndoorTemp].displayState
+                - component: f7-row
+                  config:
+                    class:
+                      - padding-right-half
+                  slots:
+                    default:
+                      - component: f7-col
+                        config:
+                          width: "25"
+                        slots:
+                          default:
+                            - component: f7-icon
+                              config:
+                                class:
+                                  - float-right
+                                color: var(--f7-theme-color)
+                                f7: bolt
+                                size: 15
+                      - component: f7-col
+                        config:
+                          width: "75"
+                        slots:
+                          default:
+                            - component: Label
+                              config:
+                                class:
+                                  - float-right
+                                style:
+                                  font-size: 12px
+                                  overflow: hidden
+                                  text-overflow: elipsis
+                                  white-space: nowrap
+                                text: =items[props.itemReleStatus].displayState
+                - component: f7-row
+                  config:
+                    class:
+                      - padding-right-half
+                  slots:
+                    default:
+                      - component: f7-col
+                        config:
+                          width: "25"
+                        slots:
+                          default:
+                            - component: f7-icon
+                              config:
+                                class:
+                                  - float-right
+                                color: var(--f7-theme-color)
+                                f7: drop
+                                size: 15
+                      - component: f7-col
+                        config:
+                          width: "75"
+                        slots:
+                          default:
+                            - component: Label
+                              config:
+                                class:
+                                  - float-right
+                                style:
+                                  font-size: 12px
+                                  overflow: hidden
+                                  text-overflow: elipsis
+                                  white-space: nowrap
+                                text: =items[props.itemIndoorHumidity].displayState
+    - component: f7-row
+      config:
+        class:
+          - justify-content-center
+        visible: =items[props.itemDeviceStatus].state == 1
+      slots:
+        default:
+          - component: oh-stepper
+            config:
+              item: =props.itemTargetTemp
+              max: =props.MaximumTemperature
+              min: =props.MinimumTemperature
+              primaryColor: var(--f7-theme-color)
+              responsive: false
+              secondaryColor: var(--f7-card-outline-border-color)
+              size: 150
+              stepSize: =props.TemperatureStepsize
+              strokeWidth: "12"
+    - component: f7-segmented
+      config:
+        class:
+          - margin-left-half
+          - margin-right-half
+          - margin-top
+          - margin-bottom-half
+        style:
+          --f7-button-border-radius: 4px
+          --f7-button-font-size: 8px
+          --f7-button-font-weight: 300
+          --f7-button-outline-border-width: 1px
+          --f7-button-padding-horizontal: 0px
+          --f7-button-padding-vertical: 0px
+          --f7-button-text-color: "=themeOptions.dark === 'light' ? 'black' : 'white'"
+        visible: =items[props.itemPower].state === 'ON'
+    - component: f7-segmented
+      config:
+        class:
+          - margin-left-half
+          - margin-right-half
+          - margin-top
+          - margin-bottom-half
+        style:
+          --f7-button-border-radius: 4px
+          --f7-button-font-weight: 300
+          --f7-button-outline-border-width: 1px
+          --f7-button-padding-horizontal: 0px
+          --f7-button-padding-vertical: 0px
+          --f7-button-text-color: "=themeOptions.dark === 'light' ? 'black' : 'white'"
+        visible: "=vars.swing === false && vars.options === false ? true : false"
+    - component: f7-row
+      config:
+        class:
+          - margin-left-half
+          - margin-right-half
+          - margin-bottom-half
+        visible: "=vars.timer_menu === false && vars.options === false && !props.hideTimerFunction === true ? true : false"
