@@ -44,6 +44,12 @@ props:
       required: false
       type: TEXT
     - context: item
+      description: Item Termoumidostato alarm
+      label: AllarmeThtX
+      name: itemAlarm
+      required: false
+      type: TEXT
+    - context: item
       description: Item for Termoumidostato Temperature SetPoint
       label: TermoumidostatoXS
       name: itemTargetTemp
@@ -65,7 +71,7 @@ props:
       required: false
       type: DECIMAL
   parameterGroups: []
-timestamp: Sep 24, 2022, 3:32:30 PM
+timestamp: Sep 24, 2022, 4:47:43 PM
 component: f7-card
 config:
   class:
@@ -229,6 +235,39 @@ slots:
                                   text-overflow: elipsis
                                   white-space: nowrap
                                 text: =items[props.itemIndoorHumidity].displayState
+                - component: f7-row
+                  config:
+                    class:
+                      - padding-right-half
+                  slots:
+                    default:
+                      - component: f7-col
+                        config:
+                          width: "25"
+                        slots:
+                          default:
+                            - component: f7-icon
+                              config:
+                                class:
+                                  - float-right
+                                color: var(--f7-theme-color)
+                                f7: alarm
+                                size: 15
+                      - component: f7-col
+                        config:
+                          width: "75"
+                        slots:
+                          default:
+                            - component: Label
+                              config:
+                                class:
+                                  - float-right
+                                style:
+                                  font-size: 12px
+                                  overflow: hidden
+                                  text-overflow: elipsis
+                                  white-space: nowrap
+                                text: =items[props.itemAlarm].state
     - component: f7-row
       config:
         class:
