@@ -1,0 +1,585 @@
+uid: Daikin HVAC
+tags: []
+props:
+  parameters:
+    - description: Location (room) or device name
+      label: Title
+      name: title
+      required: false
+      type: TEXT
+    - context: item
+      description: Item for power channel
+      label: Power
+      name: itemPower
+      required: false
+      type: TEXT
+    - context: item
+      description: Item for indoor temperature channel
+      label: Indoor temperature
+      name: itemIndoorTemp
+      required: false
+      type: TEXT
+    - context: item
+      description: Item for outdoor temperature channel
+      label: Outdoor temperature
+      name: itemOutdoorTemp
+      required: false
+      type: TEXT
+    - context: item
+      description: Item for target temperature channel
+      label: Target temperature
+      name: itemTargetTemp
+      required: false
+      type: TEXT
+    - description: Set minimum target temperature (default = 0)
+      label: Minimum Temperature
+      name: MinimumTemperature
+      required: false
+      type: INTEGER
+    - description: Set maximum target temperature (default = 100)
+      label: Maximum Temperature
+      name: MaximumTemperature
+      required: false
+      type: INTEGER
+    - description: Set Target Temperature Stepsize (default = 1)
+      label: Target Temperature Stepsize
+      name: TemperatureStepsize
+      required: false
+      type: DECIMAL
+    - context: item
+      description: Item for operation mode channel
+      label: Operation mode
+      name: itemMode
+      required: false
+      type: TEXT
+    - context: item
+      description: Item for fan speed channel
+      label: Fan speed
+      name: itemFanSpeed
+      required: false
+      type: TEXT
+    - context: item
+      description: Item for swing channel
+      label: Swing mode
+      name: itemSwing
+      required: false
+      type: TEXT
+    - context: item
+      description: Item Energy Cooling Today
+      label: Energy Cooling Today
+      name: itemEnergyCoolingToday
+      required: false
+      type: TEXT
+    - description: Hide timer button and options
+      label: Hide Timer Function
+      name: hideTimerFunction
+      required: false
+      type: BOOLEAN
+    - context: item
+      description: Switch item for timer
+      label: Switch Timer ON/OFF
+      name: itemTimerSwitch
+      required: false
+      type: TEXT
+      advanced: true
+    - context: item
+      description: Item for timer duration
+      label: Timer Duration
+      name: itemTimerDuration
+      required: false
+      type: TEXT
+      advanced: true
+    - description: Timer minimum duration
+      label: Timer minimum
+      name: TimerMinimum
+      required: false
+      type: DECIMAL
+      advanced: true
+    - description: Timer maximum duration
+      label: Timer maximum
+      name: TimerMaximum
+      required: false
+      type: DECIMAL
+      advanced: true
+    - description: Timer step
+      label: Timer step
+      name: TimerStep
+      required: false
+      type: DECIMAL
+      advanced: true
+    - description: Timer scale steps
+      label: Timer scale steps
+      name: TimerScaleSteps
+      required: false
+      type: DECIMAL
+      advanced: true
+    - description: Timer scale sub steps
+      label: Timer scale sub steps
+      name: TimerScaleSubSteps
+      required: false
+      type: DECIMAL
+      advanced: true
+  parameterGroups: []
+timestamp: Aug 22, 2022, 2:39:25 PM
+component: f7-card
+config:
+  class:
+    - no-padding
+  outline: true
+  title: =props.title
+slots:
+  default:
+    - component: f7-row
+      config:
+        class:
+          - margin-top-half
+          - margin-left-half
+          - margin-right-half
+          - margin-bottom
+      slots:
+        default:
+          - component: f7-col
+            config:
+              large: "33"
+              width: "50"
+            slots:
+              default:
+                - component: f7-segmented
+                  config:
+                    class:
+                      - segmented-strong
+                    style:
+                      --f7-button-border-radius: 4px
+                      --f7-button-fill-hover-bg-color: var(--f7-theme-color)
+                      --f7-button-padding-horizontal: 0px
+                      --f7-button-padding-vertical: 0px
+                      --f7-segmented-strong-between-buttons: 5px
+                      --f7-segmented-strong-bg-color: transparent
+                      --f7-segmented-strong-button-font-weight: 300
+                      --f7-segmented-strong-button-hover-bg-color: rgba(var(--f7-theme-color-rgb), 0.07)
+                      --f7-segmented-strong-padding: 0px
+                  slots:
+                    default:
+                      - component: oh-button
+                        config:
+                          action: toggle
+                          actionCommand: ON
+                          actionCommandAlt: OFF
+                          actionItem: =props.itemPower
+                          class:
+                            - padding-top-half
+                            - display-flex
+                            - flex-direction-column
+                          fill: "=(items[props.itemPower].state === 'ON') ? true : false"
+                          icon-f7: power
+                          iconSize: 15
+                          outline: true
+                          style:
+                            --f7-button-border-color: var(--f7-card-outline-border-color)
+                            --f7-button-border-width: 1px
+                            font-size: 8px
+                            height: auto
+                          text: ON/OFF
+                      - component: oh-button
+                        config:
+                          action: toggle
+                          actionCommand: ON
+                          actionCommandAlt: OFF
+                          actionItem: =props.itemTimerSwitch
+                          class:
+                            - display-flex
+                            - flex-direction-column
+                            - padding-top-half
+                          fill: "=(items[props.itemTimerSwitch].state === 'ON') ? true : false"
+                          iconF7: timer
+                          iconSize: 15px
+                          outline: false
+                          style:
+                            --f7-button-border-color: var(--f7-card-outline-border-color)
+                            --f7-button-border-width: 1px
+                            font-size: 8px
+                            height: auto
+                          text: =items[props.itemTimerDuration].state
+                          visible: =!props.hideTimerFunction
+          - component: f7-col
+            config:
+              width: "33"
+            slots:
+              default:
+                - component: f7-row
+                  config:
+                    class:
+                      - padding-right-half
+                  slots:
+                    default:
+                      - component: f7-col
+                        config:
+                          width: "25"
+                        slots:
+                          default:
+                            - component: f7-icon
+                              config:
+                                class:
+                                  - float-right
+                                color: var(--f7-theme-color)
+                                f7: house
+                                size: 15
+                      - component: f7-col
+                        config:
+                          width: "75"
+                        slots:
+                          default:
+                            - component: Label
+                              config:
+                                class:
+                                  - float-right
+                                style:
+                                  font-size: 12px
+                                  overflow: hidden
+                                  text-overflow: elipsis
+                                  white-space: nowrap
+                                text: =items[props.itemIndoorTemp].displayState
+                - component: f7-row
+                  config:
+                    class:
+                      - padding-right-half
+                  slots:
+                    default:
+                      - component: f7-col
+                        config:
+                          width: "25"
+                        slots:
+                          default:
+                            - component: f7-icon
+                              config:
+                                class:
+                                  - float-right
+                                color: var(--f7-theme-color)
+                                f7: tree
+                                size: 15
+                      - component: f7-col
+                        config:
+                          width: "75"
+                        slots:
+                          default:
+                            - component: Label
+                              config:
+                                class:
+                                  - float-right
+                                style:
+                                  font-size: 12px
+                                  overflow: hidden
+                                  text-overflow: elipsis
+                                  white-space: nowrap
+                                text: =items[props.itemOutdoorTemp].displayState
+                - component: f7-row
+                  config:
+                    class:
+                      - padding-right-half
+                    visible: =!(items[props.itemMode].state === 'HEAT')
+                  slots:
+                    default:
+                      - component: f7-col
+                        config:
+                          width: "25"
+                        slots:
+                          default:
+                            - component: f7-icon
+                              config:
+                                class:
+                                  - float-right
+                                color: var(--f7-theme-color)
+                                f7: "=(Number.parseFloat(items[props.itemEnergyCoolingToday].state) <= '1') ? 'battery_0' : (Number.parseFloat(items[props.itemEnergyCoolingToday].state) > '1' < '2') ? 'battery_25' : 'battery_100' "
+                                size: 15
+                      - component: f7-col
+                        config:
+                          width: "75"
+                        slots:
+                          default:
+                            - component: Label
+                              config:
+                                class:
+                                  - float-right
+                                style:
+                                  font-size: 12px
+                                  overflow: hidden
+                                  text-overflow: elipsis
+                                  white-space: nowrap
+                                text: =items[props.itemEnergyCoolingToday].state
+    - component: f7-row
+      config:
+        class:
+          - justify-content-center
+        visible: =!(items[props.itemMode].state === 'DEHUMIDIFIER'|| items[props.itemMode].state === 'FAN') && items[props.itemPower].state === 'ON'
+      slots:
+        default:
+          - component: oh-stepper
+            config:
+              item: =props.itemTargetTemp
+              max: =props.MaximumTemperature
+              min: =props.MinimumTemperature
+              primaryColor: var(--f7-theme-color)
+              responsive: false
+              secondaryColor: var(--f7-card-outline-border-color)
+              size: 150
+              stepSize: =props.TemperatureStepsize
+              strokeWidth: "12"
+    - component: f7-segmented
+      config:
+        class:
+          - margin-left-half
+          - margin-right-half
+          - margin-top
+          - margin-bottom-half
+        style:
+          --f7-button-border-radius: 4px
+          --f7-button-font-size: 8px
+          --f7-button-font-weight: 300
+          --f7-button-outline-border-width: 1px
+          --f7-button-padding-horizontal: 0px
+          --f7-button-padding-vertical: 0px
+          --f7-button-text-color: "=themeOptions.dark === 'light' ? 'black' : 'white'"
+        visible: =items[props.itemPower].state === 'ON'
+      slots:
+        default:
+          - component: oh-repeater
+            config:
+              for: modeRow
+              fragment: true
+              in:
+                - command: AUTO
+                  icon: arrow_2_squarepath
+                  text: AUTO
+                - command: COLD
+                  icon: thermometer_snowflake
+                  text: COOL
+                - command: HEAT
+                  icon: thermometer_sun
+                  text: HEAT
+                - command: DEHUMIDIFIER
+                  icon: drop_fill
+                  text: DRY
+                - command: FAN
+                  icon: wind
+                  text: FAN
+              sourceType: array
+            slots:
+              default:
+                - component: oh-button
+                  config:
+                    action: command
+                    actionCommand: =loop.modeRow.command
+                    actionItem: =props.itemMode
+                    class:
+                      - display-flex
+                      - flex-direction-column
+                      - padding-top-half
+                    fill: "=(items[props.itemMode].state === loop.modeRow.command) ? true : false"
+                    iconF7: =loop.modeRow.icon
+                    iconSize: 15px
+                    outline: true
+                    style:
+                      --f7-button-border-color: var(--f7-card-outline-border-color)
+                      height: auto
+                    text: =loop.modeRow.text
+          - component: oh-button
+            config:
+              action: variable
+              actionVariable: options
+              actionVariableValue: "=vars.options || vars.options === undefined ? false : true"
+              class:
+                - display-flex
+                - flex-direction-column
+              fill: "=vars.options || vars.options === undefined ? false : true"
+              iconF7: ellipsis_vertical
+              iconSize: 15px
+              outline: true
+              style:
+                --f7-button-border-color: var(--f7-card-outline-border-color)
+                height: auto
+                width: 50%
+    - component: f7-segmented
+      config:
+        class:
+          - margin-left-half
+          - margin-right-half
+          - margin-top
+          - margin-bottom-half
+        style:
+          --f7-button-border-radius: 4px
+          --f7-button-font-size: 8px
+          --f7-button-font-weight: 300
+          --f7-button-outline-border-width: 1px
+          --f7-button-padding-horizontal: 0px
+          --f7-button-padding-vertical: 0px
+          --f7-button-text-color: "=themeOptions.dark === 'light' ? 'black' : 'white'"
+        visible: =vars.options === false
+      slots:
+        default:
+          - component: oh-repeater
+            config:
+              for: optionsRow
+              fragment: true
+              in:
+                - icon: wind ellipsis_vertical
+                  option: fanspeed
+                - icon: move ellipsis_vertical
+                  option: swing
+              sourceType: array
+            slots:
+              default:
+                - component: oh-button
+                  config:
+                    action: variable
+                    actionVariable: =loop.optionsRow.option
+                    actionVariableValue: "=vars[loop.optionsRow.option] || vars[loop.optionsRow.option] === undefined ? false : true"
+                    class:
+                      - display-flex
+                      - flex-direction-column
+                    fill: "=vars[loop.optionsRow.option] || vars[loop.optionsRow.option] === undefined ? false : true"
+                    iconF7: =loop.optionsRow.icon
+                    iconSize: 15px
+                    outline: true
+                    style:
+                      --f7-button-border-color: var(--f7-card-outline-border-color)
+                      height: auto
+          - component: oh-button
+            config:
+              action: variable
+              actionVariable: timer_menu
+              actionVariableValue: "=vars.timer_menu || vars.timer_menu === undefined ? false : true"
+              fill: "=vars.timer_menu || vars.timer_menu === undefined ? false : true"
+              iconF7: timer ellipsis_vertical
+              iconSize: 15px
+              outline: true
+              style:
+                --f7-button-border-color: var(--f7-card-outline-border-color)
+              visible: =!props.hideTimerFunction
+    - component: f7-segmented
+      config:
+        class:
+          - margin-left-half
+          - margin-right-half
+          - margin-top
+          - margin-bottom-half
+        style:
+          --f7-button-border-radius: 4px
+          --f7-button-font-weight: 300
+          --f7-button-outline-border-width: 1px
+          --f7-button-padding-horizontal: 0px
+          --f7-button-padding-vertical: 0px
+          --f7-button-text-color: "=themeOptions.dark === 'light' ? 'black' : 'white'"
+        visible: "=vars.fanspeed === false && vars.options === false ? true : false"
+      slots:
+        default:
+          - component: oh-repeater
+            config:
+              for: fanspeedRow
+              fragment: true
+              in:
+                - command: AUTO
+                  icon: arrow_2_squarepath
+                - command: SILENCE
+                  icon: zzz
+                - command: LEVEL_1
+                  text: 1
+                - command: LEVEL_2
+                  text: 2
+                - command: LEVEL_3
+                  text: 3
+                - command: LEVEL_4
+                  text: 4
+                - command: LEVEL_5
+                  text: 5
+              sourceType: array
+            slots:
+              default:
+                - component: oh-button
+                  config:
+                    action: command
+                    actionCommand: =loop.fanspeedRow.command
+                    actionItem: =props.itemFanSpeed
+                    class:
+                      - display-flex
+                      - flex-direction-column
+                    fill: "=(items[props.itemFanSpeed].state === loop.fanspeedRow.command) ? true : false"
+                    iconF7: =loop.fanspeedRow.icon
+                    iconSize: 15px
+                    outline: true
+                    style:
+                      --f7-button-border-color: var(--f7-card-outline-border-color)
+                      height: auto
+                    text: =loop.fanspeedRow.text
+    - component: f7-segmented
+      config:
+        class:
+          - margin-left-half
+          - margin-right-half
+          - margin-top
+          - margin-bottom-half
+        style:
+          --f7-button-border-radius: 4px
+          --f7-button-font-weight: 300
+          --f7-button-outline-border-width: 1px
+          --f7-button-padding-horizontal: 0px
+          --f7-button-padding-vertical: 0px
+          --f7-button-text-color: "=themeOptions.dark === 'light' ? 'black' : 'white'"
+        visible: "=vars.swing === false && vars.options === false ? true : false"
+      slots:
+        default:
+          - component: oh-repeater
+            config:
+              for: swingRow
+              fragment: true
+              in:
+                - command: STOPPED
+                  text: OFF
+                - command: VERTICAL
+                  icon: resize_v
+                - command: HORIZONTAL
+                  icon: resize_h
+                - command: VERTICAL_AND_HORIZONTAL
+                  icon: view_3d
+              sourceType: array
+            slots:
+              default:
+                - component: oh-button
+                  config:
+                    action: command
+                    actionCommand: =loop.swingRow.command
+                    actionItem: =props.itemSwing
+                    class:
+                      - display-flex
+                      - flex-direction-column
+                    fill: "=(items[props.itemSwing].state === loop.swingRow.command) ? true : false"
+                    iconF7: =loop.swingRow.icon
+                    iconSize: 15px
+                    outline: true
+                    style:
+                      --f7-button-border-color: var(--f7-card-outline-border-color)
+                      height: auto
+                    text: =loop.swingRow.text
+    - component: f7-row
+      config:
+        class:
+          - margin-left-half
+          - margin-right-half
+          - margin-bottom-half
+        visible: "=vars.timer_menu === false && vars.options === false && !props.hideTimerFunction === true ? true : false"
+      slots:
+        default:
+          - component: f7-col
+            slots:
+              default:
+                - component: oh-slider-card
+                  config:
+                    item: =props.itemTimerDuration
+                    label: true
+                    max: =props.TimerMaximum
+                    min: =props.TimerMinimum
+                    outline: true
+                    scale: true
+                    scaleSteps: =props.TimerScaleSteps
+                    scaleSubSteps: =props.TimerScaleSubSteps
+                    step: =props.TimerStep
+                    unit: min
