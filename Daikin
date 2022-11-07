@@ -70,6 +70,12 @@ props:
       name: itemEnergyCoolingToday
       required: false
       type: TEXT
+    - context: item
+      description: Item Energy Heating Today
+      label: Energy Heating Today
+      name: itemEnergyHeatingToday
+      required: false
+      type: TEXT
     - description: Hide timer button and options
       label: Hide Timer Function
       name: hideTimerFunction
@@ -120,7 +126,7 @@ props:
       type: DECIMAL
       advanced: true
   parameterGroups: []
-timestamp: Aug 22, 2022, 2:39:25 PM
+timestamp: Nov 7, 2022, 10:12:27 AM
 component: f7-card
 config:
   class:
@@ -172,7 +178,7 @@ slots:
                             - flex-direction-column
                           fill: "=(items[props.itemPower].state === 'ON') ? true : false"
                           icon-f7: power
-                          iconSize: 15
+                          iconSize: 15px
                           outline: true
                           style:
                             --f7-button-border-color: var(--f7-card-outline-border-color)
@@ -193,7 +199,7 @@ slots:
                           fill: "=(items[props.itemTimerSwitch].state === 'ON') ? true : false"
                           iconF7: timer
                           iconSize: 15px
-                          outline: false
+                          outline: true
                           style:
                             --f7-button-border-color: var(--f7-card-outline-border-color)
                             --f7-button-border-width: 1px
@@ -203,7 +209,8 @@ slots:
                           visible: =!props.hideTimerFunction
           - component: f7-col
             config:
-              width: "33"
+              large: "13"
+              width: "50"
             slots:
               default:
                 - component: f7-row
@@ -214,7 +221,8 @@ slots:
                     default:
                       - component: f7-col
                         config:
-                          width: "25"
+                          large: 5
+                          width: 5
                         slots:
                           default:
                             - component: f7-icon
@@ -226,7 +234,8 @@ slots:
                                 size: 15
                       - component: f7-col
                         config:
-                          width: "75"
+                          large: 5
+                          width: 5
                         slots:
                           default:
                             - component: Label
@@ -247,7 +256,8 @@ slots:
                     default:
                       - component: f7-col
                         config:
-                          width: "25"
+                          large: 5
+                          width: 5
                         slots:
                           default:
                             - component: f7-icon
@@ -259,7 +269,8 @@ slots:
                                 size: 15
                       - component: f7-col
                         config:
-                          width: "75"
+                          large: 33
+                          width: 75
                         slots:
                           default:
                             - component: Label
@@ -281,7 +292,8 @@ slots:
                     default:
                       - component: f7-col
                         config:
-                          width: "25"
+                          large: 1
+                          width: 5
                         slots:
                           default:
                             - component: f7-icon
@@ -293,6 +305,7 @@ slots:
                                 size: 15
                       - component: f7-col
                         config:
+                          large: 1
                           width: "75"
                         slots:
                           default:
@@ -306,6 +319,42 @@ slots:
                                   text-overflow: elipsis
                                   white-space: nowrap
                                 text: =items[props.itemEnergyCoolingToday].state
+                - component: f7-row
+                  config:
+                    class:
+                      - padding-right-half
+                    visible: =!(items[props.itemMode].state === 'COOL')
+                  slots:
+                    default:
+                      - component: f7-col
+                        config:
+                          large: 1
+                          width: 5
+                        slots:
+                          default:
+                            - component: f7-icon
+                              config:
+                                class:
+                                  - float-right
+                                color: var(--f7-theme-color)
+                                f7: "=(Number.parseFloat(items[props.itemEnergyHeatingToday].state) <= '1') ? 'battery_0' : (Number.parseFloat(items[props.itemEnergyHeatingToday].state) > '1' < '2') ? 'battery_25' : 'battery_100' "
+                                size: 15
+                      - component: f7-col
+                        config:
+                          large: 1
+                          width: 75
+                        slots:
+                          default:
+                            - component: Label
+                              config:
+                                class:
+                                  - float-right
+                                style:
+                                  font-size: 12px
+                                  overflow: hidden
+                                  text-overflow: elipsis
+                                  white-space: nowrap
+                                text: =items[props.itemEnergyHeatingToday].state
     - component: f7-row
       config:
         class:
